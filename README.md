@@ -50,13 +50,13 @@ Click the link (default: localhost:3000) to open Dagster.
 In a new terminal, start Kafka:
 
 ```
-make start_kafka
+make kafka_start
 ```
 
 In a new terminal, start the Kafka producer:
 
 ```bash
-make start_producer
+make kafka_start_producer
 ```
 
 At this point, you should see the sensor enqueueing runs and asset runs for the various batches. See this [demo video](https://www.loom.com/share/2ede5d6feaf2442cafb83d919ca8b583?sid=7dfc7763-8b78-443a-8bc5-8f0c507f2e2e) for details.
@@ -64,7 +64,7 @@ At this point, you should see the sensor enqueueing runs and asset runs for the 
 To check the lag (messages that have been published but not consumed by Dagster) run: 
 
 ```bash
-make check_lag
+make kafka_check_lag
 ```
 
 The throughput of the system can be tuned by setting a few options:
