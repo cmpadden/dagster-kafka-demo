@@ -39,7 +39,7 @@ def sensor_factory(replica_id: int):
 
             if len(batch) > 0:
                 yield RunRequest(
-                    run_key=message.key,
+                    run_key=batch[-1].key,
                     run_config=RunConfig(ops={"loaded_from_kafka": MyAssetConfig(batch=batch)}),
                 )
 
