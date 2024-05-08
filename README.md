@@ -72,9 +72,9 @@ The throughput of the system can be tuned by setting a few options:
 Option | Description | Location 
 --- | --- | --- 
 `DESIRED_THROUGHPUT_PER_SECOND` | Number of messages to publish per second | `kafka_producer.py` 
-`MAX_BATCH_SIZE` | Number of messages to batch together into a Dagster run | `kafkademo/sensors.py` 
-`MAX_SENSOR_TICK_RUNTIME` | Max time for a sensor tick to run. Longer means fewer consumers. Recommended: 10 seconds, max: 50 seconds. | `kafkademo/sensors.py`
-`TIME_BETWEEN_SENSOR_TICKS` | Time between sensor ticks. Longer means increased delay in handling events, but less pressure on Kafka. Recommended: 10 seconds. | `kafkademo/sensors.py`
+`MAX_BATCH_SIZE` | Number of messages to batch together into a Dagster run | `dagster_kafka_demo/sensors.py` 
+`MAX_SENSOR_TICK_RUNTIME` | Max time for a sensor tick to run. Longer means fewer consumers. Recommended: 10 seconds, max: 50 seconds. | `dagster_kafka_demo/sensors.py`
+`TIME_BETWEEN_SENSOR_TICKS` | Time between sensor ticks. Longer means increased delay in handling events, but less pressure on Kafka. Recommended: 10 seconds. | `dagster_kafka_demo/sensors.py`
 Max concurrent runs | Dagster will queue runs to prevent overwhelming your run system. Default for local computer: 5 | `dagster.yaml`
 Sensor resources | Dagster will launch a thread pool to run concurrent sensors | `dagster.yaml`
 `SENSOR_REPLICAS` | Number of sensor replicas to run, equivalent to multiple Kafka consumers. Recommended max: # of threads in thread pool | `definitions.py`

@@ -2,8 +2,8 @@
 from datetime import datetime
 import time
 from dagster import asset, sensor, Definitions, RunRequest, RunConfig, Config, OpExecutionContext, define_asset_job, AssetSelection, DefaultSensorStatus
-from kafkademo.resources import KafkaResource
-from kafkademo.assets import MyAssetConfig
+from dagster_kafka_demo.resources import KafkaResource
+from dagster_kafka_demo.assets import MyAssetConfig
 
 MAX_BATCH_SIZE=50
 MAX_SENSOR_TICK_RUNTIME=30

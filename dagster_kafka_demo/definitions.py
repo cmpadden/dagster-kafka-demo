@@ -1,8 +1,8 @@
 from dagster import Definitions
 
-from kafkademo.resources import KafkaResource
-from kafkademo.sensors import sensor_factory
-from kafkademo.assets import loaded_from_kafka, downstream_of_kafka
+from dagster_kafka_demo.resources import KafkaResource
+from dagster_kafka_demo.sensors import sensor_factory
+from dagster_kafka_demo.assets import loaded_from_kafka, downstream_of_kafka
 
 SENSOR_REPLICAS=4
 
