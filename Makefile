@@ -13,3 +13,7 @@ start_kafka:
 
 start_producer:
 	python ./kafka_producer.py
+
+ruff:
+	-ruff check --fix .
+	ruff format .
