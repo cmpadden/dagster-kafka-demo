@@ -1,4 +1,4 @@
-# Dagster Stream to Micro-Batch
+# Dagster Kafka Demo
 
 [Demo video](https://www.loom.com/share/2ede5d6feaf2442cafb83d919ca8b583?sid=7dfc7763-8b78-443a-8bc5-8f0c507f2e2e)
 
@@ -22,7 +22,16 @@ In this example:
 
 ## Getting started
 
-Install Kafka following [these instructions](https://kafka.apache.org/quickstart); install into this directory. Tested with Kafka 2.13-3.4.0. Update the version info and paths in the Makefile if a different version or install directory is used.
+Install Redpanda following [these instructions](https://github.com/redpanda-data/redpanda/?tab=readme-ov-file#prebuilt-packages)
+
+On macOS that can be done using the `brew` command like so:
+
+```bash
+brew install redpanda-data/tap/redpanda && rpk container start
+```
+
+> [!NOTE]
+> Redpanda requires Docker to be running before running `rpk container start`.
 
 Install the Dagster project and dependencies into a virtual environment of your choice:
 

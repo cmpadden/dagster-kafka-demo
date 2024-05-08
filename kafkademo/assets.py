@@ -1,4 +1,4 @@
-from dagster import asset, sensor, Definitions, RunRequest, RunConfig, Config, OpExecutionContext, define_asset_job, AssetSelection, DefaultSensorStatus
+from dagster import asset, Config, OpExecutionContext, define_asset_job, AssetSelection
 from typing import List
 import time 
 
@@ -7,7 +7,7 @@ class MyAssetConfig(Config):
 
 @asset
 def loaded_from_kafka(context: OpExecutionContext, config: MyAssetConfig):
-    
+
     context.log.info(f"Handling kafka batch with values {config.batch}")
 
     context.add_output_metadata(

@@ -6,13 +6,10 @@ dagster_dev: clean
 	export DAGSTER_HOME="~/.dagster_home"; dagster dev -m kafkademo
 
 check_lag: 
-	kafka_2.13-3.4.0/bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --describe --group group1              
+	rpk group describe group1
 
-start_kafka: start_zookeeper
-	kafka_2.13-3.4.0/bin/kafka-server-start.sh kafka_2.13-3.4.0/config/server.properties & 
-
-start_zookeeper:
-	kafka_2.13-3.4.0/bin/zookeeper-server-start.sh kafka_2.13-3.4.0/config/zookeeper.properties &
+start_kafka:
+	rpk container start
 
 start_producer:
 	python ./kafka_producer.py
