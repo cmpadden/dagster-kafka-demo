@@ -4,7 +4,7 @@ import time
 
 # Inputs
 DESIRED_THROUGHPUT_PER_SECOND = 1000
-bootstrap_servers = ['localhost:9092']
+bootstrap_servers = ['localhost:52000']
 topicName = 'First_Topic'
 
 def _print_throughput(i, tstart, DESIRED_THROUGHPUT_PER_SECOND):

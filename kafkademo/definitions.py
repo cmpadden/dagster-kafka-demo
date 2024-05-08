@@ -1,4 +1,4 @@
-from dagster import asset, sensor, Definitions, RunRequest, RunConfig, Config, OpExecutionContext, define_asset_job, AssetSelection, DefaultSensorStatus
+from dagster import Definitions
 
 from kafkademo.resources import KafkaResource
 from kafkademo.sensors import sensor_factory
@@ -11,6 +11,6 @@ defs = Definitions(
     jobs=[downstream_of_kafka],
     sensors=[sensor_factory(i) for i in range(SENSOR_REPLICAS)],
     resources={
-        'kafka': KafkaResource(bootstrap_servers=['localhost:9092'], topic_name='First_Topic')
+        'kafka': KafkaResource(bootstrap_servers=['localhost:52000'], topic_name='First_Topic')
     }
 )
