@@ -27,7 +27,7 @@ Install Redpanda following [these instructions](https://github.com/redpanda-data
 On macOS that can be done using the `brew` command like so:
 
 ```bash
-brew install redpanda-data/tap/redpanda && rpk container start
+brew install redpanda-data/tap/redpanda
 ```
 
 > [!NOTE]
