@@ -1,8 +1,8 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="kafkademo",
-    packages=find_packages(exclude=["kafkademo_tests"]),
+    name="dagster_kafka_demo",
+    packages=find_packages(),
     install_requires=[
         "dagster",
         "dagster-cloud",
