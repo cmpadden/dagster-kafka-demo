@@ -1,3 +1,5 @@
+import os
+
 from dagster import Definitions
 
 from dagster_kafka_demo.assets import downstream_of_kafka, loaded_from_kafka
@@ -11,6 +13,9 @@ defs = Definitions(
     jobs=[downstream_of_kafka],
     sensors=[sensor_factory(i) for i in range(SENSOR_REPLICAS)],
     resources={
-        "kafka": KafkaResource(bootstrap_servers=["localhost:52000"], topic_name="First_Topic")
+        "kafka": KafkaResource(
+            bootstrap_servers=[os.environ.get("KAFKA_BOOTSTRAP_SERVER", "localhost:52000")],
+            topic_name="First_Topic",
+        )
     },
 )

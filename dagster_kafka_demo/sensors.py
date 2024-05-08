@@ -32,14 +32,16 @@ def sensor_factory(replica_id: int):
             msgs = consumer.poll(max_records=MAX_BATCH_SIZE, timeout_ms=2000)
 
             batch = []
+            last_message_key = None
 
             for messages in msgs.values():
                 for message in messages:
                     batch.append(message.value.decode("utf-8"))
+                    last_message_key = message.key
 
             if len(batch) > 0:
                 yield RunRequest(
-                    run_key=batch[-1].key,
+                    run_key=last_message_key,
                     run_config=RunConfig(ops={"loaded_from_kafka": MyAssetConfig(batch=batch)}),
                 )
 

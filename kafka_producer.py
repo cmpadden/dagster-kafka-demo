@@ -1,11 +1,15 @@
 import logging
+import os
 import time
 from datetime import datetime
 
+from dotenv import load_dotenv
 from kafka import KafkaProducer
 
+load_dotenv()
+
 DESIRED_THROUGHPUT_PER_SECOND = 1000
-bootstrap_servers = ["localhost:52000"]
+bootstrap_servers = [os.environ.get("KAFKA_BOOTSTRAP_SERVER", "localhost:52000")]
 topicName = "First_Topic"
 
 logging.basicConfig()
