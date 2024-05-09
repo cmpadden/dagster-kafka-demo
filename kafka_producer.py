@@ -8,9 +8,9 @@ from kafka import KafkaProducer
 
 load_dotenv()
 
-DESIRED_THROUGHPUT_PER_SECOND = 1000
+PRODUCER_THROUGHPUT_PER_SECOND = int(os.environ.get("PRODUCER_THROUGHPUT_PER_SECOND", 1000))
 BOOTSTRAP_SERVERS = [os.environ.get("KAFKA_BOOTSTRAP_SERVER", "localhost:52000")]
-TOPIC_NAME = "First_Topic"
+TOPIC_NAME = os.environ.get("KAFKA_TOPIC", "demo_topic_1")
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
@@ -31,5 +31,5 @@ producer = KafkaProducer(bootstrap_servers=BOOTSTRAP_SERVERS)
 tstart = datetime.now()
 for i in range(0, 100000):
     producer.send(TOPIC_NAME, bytes(f"Message {i}", "utf-8"))
-    time.sleep(1 / DESIRED_THROUGHPUT_PER_SECOND)
-    tstart = _print_throughput(i, tstart, DESIRED_THROUGHPUT_PER_SECOND)
+    time.sleep(1 / PRODUCER_THROUGHPUT_PER_SECOND)
+    tstart = _print_throughput(i, tstart, PRODUCER_THROUGHPUT_PER_SECOND)

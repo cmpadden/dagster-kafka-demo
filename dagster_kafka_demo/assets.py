@@ -1,4 +1,3 @@
-import time
 from typing import List
 
 from dagster import (
@@ -11,16 +10,20 @@ from dagster import (
 )
 
 
-class MyAssetConfig(Config):
+class KafkaConsumerConfig(Config):
+    max_offset: str
     batch: List[str]
 
 
 @asset
-def loaded_from_kafka(context: OpExecutionContext, config: MyAssetConfig) -> MaterializeResult:
+def loaded_from_kafka(
+    context: OpExecutionContext, config: KafkaConsumerConfig
+) -> MaterializeResult:
     context.log.info(f"Handling kafka batch with values {config.batch}")
 
-    # do the real processing here
-    time.sleep(1)
+    # write file with records, partitioned by min/max batch ids
+    with open(f"data/{config.max_offset}", "w") as f:
+        f.writelines(config.batch)
 
     return MaterializeResult(
         metadata={
@@ -31,6 +34,6 @@ def loaded_from_kafka(context: OpExecutionContext, config: MyAssetConfig) -> Mat
     )
 
 
-downstream_of_kafka = define_asset_job(
-    name="downstream_of_kafka", selection=AssetSelection.assets(loaded_from_kafka)
+kafka_consumer_output_job = define_asset_job(
+    name="kafka_consumer_output", selection=AssetSelection.assets(loaded_from_kafka)
 )

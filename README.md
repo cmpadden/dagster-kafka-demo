@@ -12,7 +12,7 @@ This example project shows how you might use Dagster for a micro-batch streaming
 
 - Once the runs are in the run queue, Dagster launches and tracks the micro-batch runs. The number of concurrent runs can be managed by the Dagster queue, see `dagster.yaml`.
 
-- For each run, the batch of messages is passed to the Dagster asset through configuration and then processed. In this example, the `MyAssetConfig.kafka_msg_batch` accepts a list of decoded `message.values`. You could do any number of interesting things in this processing step, such as bulk uploading to a warehouse or using Dagster's dynamic orchestration to parallel process inputs.
+- For each run, the batch of messages is passed to the Dagster asset through configuration and then processed. In this example, the `KafkaConsumerConfig.kafka_msg_batch` accepts a list of decoded `message.values`. You could do any number of interesting things in this processing step, such as bulk uploading to a warehouse or using Dagster's dynamic orchestration to parallel process inputs.
 
 - The Kafka connection details are stored in a Dagster class, `KafkaResource`. I've found that in practice, tuning `fetch_min_bytes` is important.
 
@@ -69,7 +69,7 @@ The throughput of the system can be tuned by setting a few options:
 
 | Option                          | Description                                                                                                                      | Location                        |
 |---------------------------------|----------------------------------------------------------------------------------------------------------------------------------|---------------------------------|
-| `DESIRED_THROUGHPUT_PER_SECOND` | Number of messages to publish per second                                                                                         | `kafka_producer.py`             |
+| `PRODUCER_THROUGHPUT_PER_SECOND` | Number of messages to publish per second                                                                                         | `kafka_producer.py`             |
 | `MAX_BATCH_SIZE`                | Number of messages to batch together into a Dagster run                                                                          | `dagster_kafka_demo/sensors.py` |
 | `MAX_SENSOR_TICK_RUNTIME`       | Max time for a sensor tick to run. Longer means fewer consumers. Recommended: 10 seconds, max: 50 seconds.                       | `dagster_kafka_demo/sensors.py` |
 | `TIME_BETWEEN_SENSOR_TICKS`     | Time between sensor ticks. Longer means increased delay in handling events, but less pressure on Kafka. Recommended: 10 seconds. | `dagster_kafka_demo/sensors.py` |
