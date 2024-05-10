@@ -1,3 +1,4 @@
+import tempfile
 from typing import Any, List
 
 from dagster import (
@@ -24,10 +25,9 @@ def loaded_from_kafka(
 ) -> MaterializeResult:
     context.log.info(f"handling kafka batch: {context.partition_key}")
 
-    # todo - append to temporary location; determine partitioned file location
-    # # write file with records, partitioned by min/max batch ids
-    # with open(f"data/{context.partition_key}", "w") as f:
-    #     f.writelines(config.batch)
+    # Processing of batch records is to be done here...
+    with tempfile.TemporaryFile(mode="w") as tf:
+        tf.writelines(config.batch)
 
     return MaterializeResult(
         metadata={
