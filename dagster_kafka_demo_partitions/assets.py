@@ -1,4 +1,4 @@
-from typing import Any, List, Mapping
+from typing import Any, List
 
 from dagster import (
     AssetSelection,

@@ -10,12 +10,12 @@ from dagster import (
     sensor,
 )
 
+from dagster_kafka_demo.resources import KafkaResource
 from dagster_kafka_demo_partitions.assets import (
     KafkaConsumerConfig,
     kafka_consumer_output_job,
     kafka_consumer_partition_def,
 )
-from dagster_kafka_demo.resources import KafkaResource
 
 MAX_BATCH_SIZE = 50
 MAX_SENSOR_TICK_RUNTIME = 30
@@ -46,13 +46,12 @@ def sensor_factory(replica_id: int):
 
             for messages in msgs.values():
                 for message in messages:
-                    payload = json.loads(message.value.decode('utf-8'))
-                    if payload.get('category') in batches:
-                        batches[payload.get('category')].append(payload)
+                    payload = json.loads(message.value.decode("utf-8"))
+                    if payload.get("category") in batches:
+                        batches[payload.get("category")].append(payload)
                     else:
-                        batches[payload.get('category')] = [(payload)]
+                        batches[payload.get("category")] = [(payload)]
                     max_offset = message.offset
-
 
             for category, batch in batches.items():
                 if len(batch) > 0:
