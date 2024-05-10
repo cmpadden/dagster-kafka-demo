@@ -2,9 +2,9 @@ import os
 
 from dagster import Definitions
 
-from dagster_kafka_demo.assets import kafka_consumer_output_job, loaded_from_kafka
-from dagster_kafka_demo.resources import KafkaResource
-from dagster_kafka_demo.sensors import sensor_factory
+from dagster_kafka_demo_partitions.assets import kafka_consumer_output_job, loaded_from_kafka
+from dagster_kafka_demo_partitions.resources import KafkaResource
+from dagster_kafka_demo_partitions.sensors import sensor_factory
 
 SENSOR_REPLICAS = 4
 

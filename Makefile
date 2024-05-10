@@ -9,6 +9,9 @@ clean:
 dagster_dev: clean  ## Start Dagster instance
 	export DAGSTER_HOME="~/.dagster_home"; dagster dev -m dagster_kafka_demo
 
+dagster_dev_partitions: clean  ## Start Dagster instance
+	export DAGSTER_HOME="~/.dagster_home"; dagster dev -m dagster_kafka_demo_partitions
+
 kafka_check_lag:   ## Display Redpanda Kafka group information
 	rpk group describe group1
 

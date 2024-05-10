@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, List, Mapping
 
 from dagster import (
     AssetSelection,
@@ -12,13 +12,11 @@ from dagster._core.definitions import DynamicPartitionsDefinition
 
 
 class KafkaConsumerConfig(Config):
-    batch: List[str]
+    batch: List[Any]
 
 
-# The above exception was caused by the following exception:
-# dagster._check.CheckError: Failure condition: Dynamic partition key 127443 for partitions def 'batch' is invalid. After dynamic partitions requests are applied, it does not exist in the set of valid partition keys.
+kafka_consumer_partition_def = DynamicPartitionsDefinition(name="category")
 
-kafka_consumer_partition_def = DynamicPartitionsDefinition(name="batch")
 
 @asset(partitions_def=kafka_consumer_partition_def)
 def loaded_from_kafka(
@@ -26,15 +24,16 @@ def loaded_from_kafka(
 ) -> MaterializeResult:
     context.log.info(f"handling kafka batch: {context.partition_key}")
 
-    # write file with records, partitioned by min/max batch ids
-    with open(f"data/{context.partition_key}", "w") as f:
-        f.writelines(config.batch)
+    # todo - append to temporary location; determine partitioned file location
+    # # write file with records, partitioned by min/max batch ids
+    # with open(f"data/{context.partition_key}", "w") as f:
+    #     f.writelines(config.batch)
 
     return MaterializeResult(
         metadata={
             "kafka_batch_size": len(config.batch),
-            "kafka_batch_value_start": config.batch[0],
-            "kafka_batch_value_end": config.batch[-1],
+            # "kafka_batch_value_start": config.batch[0].get("value"),
+            # "kafka_batch_value_end": config.batch[-1].get("value"),
         }
     )
 
