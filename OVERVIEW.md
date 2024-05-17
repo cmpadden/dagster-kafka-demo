@@ -15,8 +15,7 @@ An alternative approach would be to use Dagster sensors to subscribe to the Kafk
 
 We're going to use [Redpand](https://redpanda.com/) to run a dockerized version of Kafka locally.
 
-If you're on macOS and use [Homebrew](https://brew.sh/) you can install it using the following
-command, otherwise, reference the official [installation instructions](https://github.com/redpanda-data/redpanda/?tab=readme-ov-file#prebuilt-packages).
+If you're on macOS and use [Homebrew](https://brew.sh/) you can install it using the following command, otherwise, reference the official [installation instructions](https://github.com/redpanda-data/redpanda/?tab=readme-ov-file#prebuilt-packages).
 
 ```bash
 $ brew install redpanda-data/tap/redpanda
@@ -35,8 +34,7 @@ NODE-ID  STATUS   KAFKA-ADDRESS    ADMIN-ADDRESS    PROXY-ADDRESS    SCHEMA-REGI
 0        running  127.0.0.1:58550  127.0.0.1:58549  127.0.0.1:58551  127.0.0.1:58552
 ```
 
-Run the `rpk cluster info` command, and make note of the port being used by the broker. We will be
-using this when connecting to the service.
+Run the `rpk cluster info` command, and make note of the port being used by the broker. We will be using this when connecting to the service.
 
 ```bash
 $ rpk cluster info
@@ -50,8 +48,7 @@ ID    HOST       PORT
 0*    127.0.0.1  52000
 ```
 
-Next, we're going to scaffold out a new Dagster project. With the Dagster command-line utility on
-your system (`pip install dagster`), 
+Next, we're going to scaffold out a new Dagster project. With the Dagster command-line utility on your system (`pip install dagster`), 
 
 ```bash
 $ dagster project scaffold --name dagster-kafka-demo
