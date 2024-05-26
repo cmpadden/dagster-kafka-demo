@@ -1,4 +1,6 @@
+import json
 from datetime import datetime
+from typing import Mapping
 
 from dagster import (
     DefaultSensorStatus,
@@ -8,12 +10,12 @@ from dagster import (
     sensor,
 )
 
-from dagster_kafka_demo.assets import (
+from dagster_kafka_demo.resources import KafkaResource
+from dagster_kafka_demo_partitions.assets import (
     KafkaConsumerConfig,
     kafka_consumer_output_job,
     kafka_consumer_partition_def,
 )
-from dagster_kafka_demo.resources import KafkaResource
 
 MAX_BATCH_SIZE = 50
 MAX_SENSOR_TICK_RUNTIME = 30
@@ -29,41 +31,47 @@ def sensor_factory(replica_id: int):
     )
     def watch_kafka(kafka: KafkaResource):
         """A sensor that consumes events from kafka and launches enqueues runs for them."""
-        # for each sensor loop, create a consumer and read up to MAX records
         consumer = kafka.get_consumer()
         tstart = datetime.now()
 
         run_requests = []
-        partition_keys = []
+        partition_keys = set()
+
+        # todo - prevent batches from being too small
         while (datetime.now() - tstart).seconds < MAX_SENSOR_TICK_RUNTIME:
             msgs = consumer.poll(max_records=MAX_BATCH_SIZE, timeout_ms=2000)
 
-            batch = []
+            batches: Mapping[str, list] = {}
             max_offset = None
 
             for messages in msgs.values():
                 for message in messages:
-                    batch.append(message.value.decode("utf-8"))
+                    payload = json.loads(message.value.decode("utf-8"))
+                    if payload.get("category") in batches:
+                        batches[payload.get("category")].append(payload)
+                    else:
+                        batches[payload.get("category")] = [(payload)]
                     max_offset = message.offset
 
-            if len(batch) > 0:
-                partition_keys.append(str(max_offset))
-                run_requests.append(
-                    RunRequest(
-                        run_key=f"max_offset_{max_offset}",
-                        run_config=RunConfig(
-                            ops={"loaded_from_kafka": KafkaConsumerConfig(batch=batch)}
-                        ),
-                        partition_key=str(max_offset),
+            for category, batch in batches.items():
+                if len(batch) > 0:
+                    partition_keys.add(category)
+                    run_requests.append(
+                        RunRequest(
+                            run_key=f"max_offset_{max_offset}",
+                            run_config=RunConfig(
+                                ops={"loaded_from_kafka": KafkaConsumerConfig(batch=batch)}
+                            ),
+                            partition_key=category,
+                        )
                     )
-                )
 
             consumer.commit()
 
         return SensorResult(
             run_requests=run_requests,
             dynamic_partitions_requests=[
-                kafka_consumer_partition_def.build_add_request(partition_keys)
+                kafka_consumer_partition_def.build_add_request(list(partition_keys))
             ],
         )
 
